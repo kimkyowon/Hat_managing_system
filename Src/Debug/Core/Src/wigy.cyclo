@@ -1,0 +1,11 @@
+../Core/Src/wigy.c:21:6:Initialize_wigy	1
+../Core/Src/wigy.c:35:6:is_pushed_L_sw	2
+../Core/Src/wigy.c:42:6:is_pushed_System_sw	2
+../Core/Src/wigy.c:49:6:lights_up_one	7
+../Core/Src/wigy.c:74:6:process	1
+../Core/Src/wigy.c:78:13:led_off_all	1
+../Core/Src/wigy.c:83:13:Ctrl_IR_Led	1
+../Core/Src/wigy.c:87:13:Ctrl_UVA_Led	1
+../Core/Src/wigy.c:91:13:Ctrl_UVC_Led	1
+../Core/Src/wigy.c:96:13:change_system_mode	5
+../Core/Src/wigy.c:114:13:change_led_mode	1

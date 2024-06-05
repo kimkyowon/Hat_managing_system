@@ -151,7 +151,7 @@ void EXTI0_1_IRQHandler(void)
   /* USER CODE END EXTI0_1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(SW1_Pin);
   /* USER CODE BEGIN EXTI0_1_IRQn 1 */
-  if(my_wigy.L.push_cnt>=5) my_wigy.L.push_cnt = 0;
+  if(my_wigy.L.push_cnt>=5) my_wigy.L.push_cnt = 1;
   else my_wigy.L.push_cnt++;
   /* USER CODE END EXTI0_1_IRQn 1 */
 }
@@ -166,7 +166,7 @@ void EXTI2_3_IRQHandler(void)
   /* USER CODE END EXTI2_3_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(SW2_Pin);
   /* USER CODE BEGIN EXTI2_3_IRQn 1 */
-  if(my_wigy.System.push_cnt>=3) my_wigy.System.push_cnt = 0;
+  if(my_wigy.System.push_cnt>=3) my_wigy.System.push_cnt = 1;
   my_wigy.System.push_cnt++;
   /* USER CODE END EXTI2_3_IRQn 1 */
 }
