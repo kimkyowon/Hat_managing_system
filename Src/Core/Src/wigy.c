@@ -9,7 +9,7 @@
 
 // static functions declaration
 static void led_off_all();
-
+static void Ctrl_IR_Led(turn blank);
 // For initializing struct type wigy
 void Initialize_wigy(WIGY_t *_instance){
 	_instance->L.push_cnt 		= 0;
@@ -24,9 +24,13 @@ void Initialize_wigy(WIGY_t *_instance){
 
 }
 
-void update_mode(WIGY_t *wigy){
-	if()
-	wigy->mode
+
+void is_pushed_L_sw(WIGY_t *wigy){
+	if(wigy->L.push_cnt != wigy->mode.lmode) wigy->mode.lmode = wigy->L.push_cnt;
+}
+
+void is_pushed_System_sw(WIGY_t *wigy){
+	if(wigy->System.push_cnt != wigy->mode.sysmode) wigy->mode.sysmode = wigy->System.push_cnt;
 }
 
 void lights_up_one(color_t color){
@@ -52,31 +56,16 @@ void lights_up_one(color_t color){
 	}
 }
 
-
-
-
 void process(WIGY_t *wigy){
 
-
-	swtich(wigy->mode){
-		case:
-			break;
-		case:
-			break;
-		case:
-			break;
-		case:
-			break;
-		case:
-			break;
-		default:
-			break;
-	}
 }
 
 static void led_off_all(){
 	HAL_GPIO_WritePin(GPIOA, USBLED_Pin|RGB_BLUE_G_Pin|RGB_RED_G_Pin, GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIOB, LEDD1012_G_Pin|LED12_G_Pin, GPIO_PIN_RESET);
+}
+static void Ctrl_IR_Led(turn blank){
+	HAL_GPIO_WritePin(GPIO)
 }
 
 

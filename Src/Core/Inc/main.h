@@ -59,6 +59,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define LEDD1012_G_Pin GPIO_PIN_7
 #define LEDD1012_G_GPIO_Port GPIOB
+#define Heater_G_Pin GPIO_PIN_14
+#define Heater_G_GPIO_Port GPIOC
+#define UVLED_G_Pin GPIO_PIN_15
+#define UVLED_G_GPIO_Port GPIOC
 #define USBLED_Pin GPIO_PIN_0
 #define USBLED_GPIO_Port GPIOA
 #define SW1_Pin GPIO_PIN_1
@@ -69,10 +73,12 @@ void Error_Handler(void);
 #define SW2_EXTI_IRQn EXTI2_3_IRQn
 #define EXTFAN_G_Pin GPIO_PIN_3
 #define EXTFAN_G_GPIO_Port GPIOA
-#define RGB_BLUE_G_Pin GPIO_PIN_4
-#define RGB_BLUE_G_GPIO_Port GPIOA
-#define RGB_RED_G_Pin GPIO_PIN_11
-#define RGB_RED_G_GPIO_Port GPIOA
+#define RGB_Green_G_Pin GPIO_PIN_4
+#define RGB_Green_G_GPIO_Port GPIOA
+#define RGB_Red_G_Pin GPIO_PIN_0
+#define RGB_Red_G_GPIO_Port GPIOB
+#define RGB_Blue_G_Pin GPIO_PIN_11
+#define RGB_Blue_G_GPIO_Port GPIOA
 #define LED12_G_Pin GPIO_PIN_3
 #define LED12_G_GPIO_Port GPIOB
 

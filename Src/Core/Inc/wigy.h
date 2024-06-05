@@ -51,7 +51,8 @@ typedef struct MZR_WIGY{
 }WIGY_t;
 
 void Initialize_wigy(WIGY_t *instance);
-void update_mode(WIGY_t *wigy);
+void is_pushed_L_sw(WIGY_t *wigy);
+void is_pushed_System_sw(WIGY_t *wigy);
 void lights_up_one(color_t color);
 void process(WIGY_t *wigy);
 
