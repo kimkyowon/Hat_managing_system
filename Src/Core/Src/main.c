@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "wigy.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -43,12 +44,15 @@
 
 /* USER CODE BEGIN PV */
 WIGY_t my_wigy;
+Ptimer_t led_blink;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
+void initialize_pwp(Ptimer_t* _instance, uint32_t period, int repeat_cnt);
+void process_with_period(Ptimer_t* _instance);
 
 /* USER CODE END PFP */
 
@@ -87,7 +91,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-
+  initialize_pwp(&led_blink, 500, 5);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -205,7 +209,21 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void initialize_pwp(Ptimer_t* _instance, uint32_t period, int repeat_cnt){
+	_instance->do_flag 		= false;
+	_instance->period  		= period;
+	_instance->repeat_cnt	= repeat_cnt;
+}
 
+void process_with_period(Ptimer_t* _instance){
+	if(_instance->current_cnt == _instance->repeat_cnt) _instance->do_flag = false;
+
+	if(_instance->tick >= _instance->period && (_instance->do_flag == false)){
+		_instance->do_flag = true;
+		_instance->tick = 0;
+		_instance->current_cnt++;
+	}
+}
 /* USER CODE END 4 */
 
 /**

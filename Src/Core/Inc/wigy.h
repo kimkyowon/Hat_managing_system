@@ -20,7 +20,7 @@ typedef enum {
 }turn;
 
 typedef enum L{
-	default_mode,mood,low_salgyun, high_salgyun, mid_salgyun, one_high_salgyun,remove_func
+	default_mode, L_mode1, L_mode2, L_mode3, L_mode4, L_mode5
 }L_mode_t;
 
 typedef enum System{
@@ -48,12 +48,14 @@ typedef struct MZR_WIGY{
 	SW_t System;	// SW2
 
 	mode_t mode;
+
 }WIGY_t;
 
 void Initialize_wigy(WIGY_t *instance);
 void is_pushed_L_sw(WIGY_t *wigy);
 void is_pushed_System_sw(WIGY_t *wigy);
-void lights_up_one(color_t color);
+void lights_up_one(color_t color, turn on_off);
+void led_blink(color_t color, uint32_t blink_period,uint32_t blink_time);
 void process(WIGY_t *wigy);
 
 
