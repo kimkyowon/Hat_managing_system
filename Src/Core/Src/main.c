@@ -99,7 +99,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  process(&my_wigy);
+	  process_with_period(&led_blink);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

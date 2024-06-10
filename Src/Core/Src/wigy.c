@@ -8,7 +8,7 @@
 #include "wigy.h"
 
 // PV _ private value for user
-
+extern Ptimer_t led_blink;
 
 
 // static functions prototypes
@@ -17,6 +17,7 @@ static void Ctrl_IR_Led(turn blank);
 static void Ctrl_UVA_Led(turn blank);
 static void Ctrl_UVC_Led(turn blank);
 static void Ctrl_EXTFAN(turn blank);
+static void process_led_blink(Ptimer_t* process,color_t color);
 
 static void change_system_mode(Sys_mode_t sysmode);
 static void change_led_mode(L_mode_t lmode);
@@ -34,7 +35,6 @@ void Initialize_wigy(WIGY_t *_instance){
 	_instance->mode.sysmode		= 0;
 
 }
-
 
 void is_pushed_L_sw(WIGY_t *wigy){
 	if(wigy->L.push_cnt != wigy->mode.lmode){
@@ -75,13 +75,9 @@ void lights_up_one(color_t color, turn on_off){
 	}
 }
 
-void led_blink(color_t color, uint32_t blink_period,uint32_t blink_time){
-	lights_up_one(color, on);
-
-}
-
 void process(WIGY_t *wigy){
-
+	is_pushed_L_sw(wigy);
+	is_pushed_System_sw(wigy);
 }
 
 
@@ -145,7 +141,11 @@ static void change_led_mode(L_mode_t lmode){
 		Ctrl_IR_Led(on);
 		break;
 	case default_mode:	//remove_func
-
+		led_off_all();
+		Ctrl_UVA_Led(off);
+		Ctrl_UVC_Led(off);
+		Ctrl_IR_Led(off);
+		process_led_blink(&led_blink, pink);
 		break;
 	}
 }
@@ -169,6 +169,13 @@ static void Ctrl_UVC_Led(turn blank){
 
 static void Ctrl_EXTFAN(turn blank){
 	HAL_GPIO_WritePin(GPIOA,EXTFAN_G_Pin,blank);
+}
+
+static void process_led_blink(Ptimer_t* process,color_t color){
+	if(process->do_flag == true){
+		lights_up_one(color,process->current_cnt%2);	//set state with current cnt, cause blink has two state (off and on)
+		process->do_flag = false;
+	}
 }
 
 

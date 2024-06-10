@@ -55,7 +55,6 @@ void Initialize_wigy(WIGY_t *instance);
 void is_pushed_L_sw(WIGY_t *wigy);
 void is_pushed_System_sw(WIGY_t *wigy);
 void lights_up_one(color_t color, turn on_off);
-void led_blink(color_t color, uint32_t blink_period,uint32_t blink_time);
 void process(WIGY_t *wigy);
 
 
