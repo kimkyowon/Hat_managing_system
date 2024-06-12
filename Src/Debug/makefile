@@ -66,8 +66,8 @@ all: main-build
 main-build: WIGY.elf secondary-outputs
 
 # Tool invocations
-WIGY.elf WIGY.map: $(OBJS) $(USER_OBJS) C:\Users\vvvsk\Desktop\외주\모자관리기\ -\ 하프하프\Hat_managing_system\Src\STM32G030F6PX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "WIGY.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\vvvsk\Desktop\외주\모자관리기 - 하프하프\Hat_managing_system\Src\STM32G030F6PX_FLASH.ld" --specs=nosys.specs -Wl,-Map="WIGY.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+WIGY.elf WIGY.map: $(OBJS) $(USER_OBJS) C:\Users\vvvsk\Desktop\Git\Hat_managing_system\Src\STM32G030F6PX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "WIGY.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\vvvsk\Desktop\Git\Hat_managing_system\Src\STM32G030F6PX_FLASH.ld" --specs=nosys.specs -Wl,-Map="WIGY.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

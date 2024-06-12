@@ -20,7 +20,7 @@ typedef enum {
 }turn;
 
 typedef enum L{
-	default_mode, L_mode1, L_mode2, L_mode3, L_mode4, L_mode5
+	default_mode, L_mode1, L_mode2, L_mode3, L_mode4, L_mode5, remove_funcs
 }L_mode_t;
 
 typedef enum System{

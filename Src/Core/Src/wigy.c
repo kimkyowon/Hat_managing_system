@@ -50,7 +50,15 @@ void is_pushed_System_sw(WIGY_t *wigy){
 	}
 }
 
-void lights_up_one(color_t color, turn on_off){
+static void read_state(WIGY_t *wigy){
+	wigy->irled  = HAL_GPIO_ReadPin(GPIOB,LEDD1012_G_Pin);
+	wigy->uvled  = HAL_GPIO_ReadPin(GPIOC, UVLED_G_Pin);
+	wigy->uvcled = HAL_GPIO_ReadPin(GPIOB, LED12_G_Pin);
+	wigy->fan	 = HAL_GPIO_ReadPin(GPIOA,EXTFAN_G_Pin);
+
+}
+
+void Ctrl_led(color_t color, turn on_off){
 	led_off_all();
 	switch(color){
 	case pink:
@@ -78,6 +86,7 @@ void lights_up_one(color_t color, turn on_off){
 void process(WIGY_t *wigy){
 	is_pushed_L_sw(wigy);
 	is_pushed_System_sw(wigy);
+	read_state(wigy);
 }
 
 
@@ -87,21 +96,21 @@ static void change_system_mode(Sys_mode_t sysmode){
 		//do nothing
 		break;
 	case Sys_mode1:
-		lights_up_one(red,on);
+		Ctrl_led(red,on);
 		Ctrl_IR_Led(on);
 		Ctrl_UVA_Led(on);
 		Ctrl_UVC_Led(on);
 		Ctrl_EXTFAN(off);
 		break;
 	case Sys_mode2:
-		lights_up_one(red,on);
+		Ctrl_led(red,on);
 		Ctrl_IR_Led(on);
 		Ctrl_UVA_Led(on);
 		Ctrl_UVC_Led(on);
 		Ctrl_EXTFAN(on);
 		break;
 	case Sys_All_off:
-		lights_up_one(none,on);
+		Ctrl_led(none,on);
 		Ctrl_IR_Led(off);
 		Ctrl_UVA_Led(off);
 		Ctrl_UVC_Led(off);
@@ -114,46 +123,47 @@ static void change_system_mode(Sys_mode_t sysmode){
 static void change_led_mode(L_mode_t lmode){
 	switch(lmode){
 	case L_mode1:	//mood
-		lights_up_one(red,on);
+		Ctrl_led(red,on);
 		break;
 
 	case L_mode2:	//low_salgyun
-		lights_up_one(sky,on);
+		Ctrl_led(sky,on);
 		Ctrl_UVA_Led(on);
 		break;
 
 	case L_mode3:	//high_salgyun
-		lights_up_one(blue,on);
+		Ctrl_led(blue,on);
 		Ctrl_UVA_Led(on);
 		Ctrl_UVC_Led(on);
 		break;
 
 	case L_mode4:	//mid_salgyun
-		lights_up_one(green,on);
+		Ctrl_led(green,on);
 		Ctrl_UVA_Led(on);
 		Ctrl_UVC_Led(on);
 		break;
 
 	case L_mode5:	//one_high_salgyun
-		lights_up_one(pink,on);
+		Ctrl_led(pink,on);
 		Ctrl_UVA_Led(on);
 		Ctrl_UVC_Led(on);
 		Ctrl_IR_Led(on);
 		break;
-	case default_mode:	//remove_func
+	case remove_funcs:	//remove_func
 		led_off_all();
 		Ctrl_UVA_Led(off);
 		Ctrl_UVC_Led(off);
 		Ctrl_IR_Led(off);
 		process_led_blink(&led_blink, pink);
 		break;
+	default:
+		break;
 	}
 }
 // Ctrl function (GPIO)
 static void led_off_all(){	//temporary all gpio
-	HAL_GPIO_WritePin(GPIOA, USBLED_Pin|EXTFAN_G_Pin|RGB_Green_G_Pin|RGB_Blue_G_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOB, LEDD1012_G_Pin|RGB_Red_G_Pin|LED12_G_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIOC, Heater_G_Pin|UVLED_G_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOA, RGB_Green_G_Pin|RGB_Blue_G_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOB, RGB_Red_G_Pin, GPIO_PIN_RESET);
 }
 static void Ctrl_IR_Led(turn blank){
 	HAL_GPIO_WritePin(GPIOB,LEDD1012_G_Pin, blank);
@@ -173,7 +183,7 @@ static void Ctrl_EXTFAN(turn blank){
 
 static void process_led_blink(Ptimer_t* process,color_t color){
 	if(process->do_flag == true){
-		lights_up_one(color,process->current_cnt%2);	//set state with current cnt, cause blink has two state (off and on)
+		Ctrl_led(color,process->current_cnt%2);	//set state with current cnt, cause blink has two state (off and on)
 		process->do_flag = false;
 	}
 }

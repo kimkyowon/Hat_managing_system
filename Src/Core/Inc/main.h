@@ -72,12 +72,12 @@ void Error_Handler(void);
 #define UVLED_G_GPIO_Port GPIOC
 #define USBLED_Pin GPIO_PIN_0
 #define USBLED_GPIO_Port GPIOA
-#define SW1_Pin GPIO_PIN_1
-#define SW1_GPIO_Port GPIOA
-#define SW1_EXTI_IRQn EXTI0_1_IRQn
-#define SW2_Pin GPIO_PIN_2
+#define SW2_Pin GPIO_PIN_1
 #define SW2_GPIO_Port GPIOA
-#define SW2_EXTI_IRQn EXTI2_3_IRQn
+#define SW2_EXTI_IRQn EXTI0_1_IRQn
+#define SW1_Pin GPIO_PIN_2
+#define SW1_GPIO_Port GPIOA
+#define SW1_EXTI_IRQn EXTI2_3_IRQn
 #define EXTFAN_G_Pin GPIO_PIN_3
 #define EXTFAN_G_GPIO_Port GPIOA
 #define RGB_Green_G_Pin GPIO_PIN_4
