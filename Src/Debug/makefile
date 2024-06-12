@@ -52,6 +52,12 @@ default.size.stdout \
 OBJDUMP_LIST += \
 WIGY.list \
 
+OBJCOPY_HEX += \
+WIGY.hex \
+
+OBJCOPY_BIN += \
+WIGY.bin \
+
 
 # All Target
 all: main-build
@@ -60,8 +66,8 @@ all: main-build
 main-build: WIGY.elf secondary-outputs
 
 # Tool invocations
-WIGY.elf WIGY.map: $(OBJS) $(USER_OBJS) C:\Users\KYO\Desktop\외주\모자관리기\ -\ 박대선\ 대표님\Hat_managing_system\Src\STM32G030F6PX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "WIGY.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\KYO\Desktop\외주\모자관리기 - 박대선 대표님\Hat_managing_system\Src\STM32G030F6PX_FLASH.ld" --specs=nosys.specs -Wl,-Map="WIGY.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+WIGY.elf WIGY.map: $(OBJS) $(USER_OBJS) C:\Users\vvvsk\Desktop\외주\모자관리기\ -\ 하프하프\Hat_managing_system\Src\STM32G030F6PX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "WIGY.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\vvvsk\Desktop\외주\모자관리기 - 하프하프\Hat_managing_system\Src\STM32G030F6PX_FLASH.ld" --specs=nosys.specs -Wl,-Map="WIGY.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -75,12 +81,22 @@ WIGY.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+WIGY.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "WIGY.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+WIGY.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "WIGY.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) WIGY.elf WIGY.list WIGY.map default.size.stdout
+	-$(RM) WIGY.bin WIGY.elf WIGY.hex WIGY.list WIGY.map default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'
