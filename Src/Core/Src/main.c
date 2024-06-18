@@ -91,7 +91,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  initialize_pwp(&led_blink, 500, 5);
+  //initialize_pwp(&led_blink, 500, 5);
 
   /* USER CODE END 2 */
 
@@ -103,7 +103,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  process(&my_wigy);
-	  process_with_period(&led_blink);
+	  //process_with_period(&led_blink);
   }
   /* USER CODE END 3 */
 }

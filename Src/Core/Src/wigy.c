@@ -17,13 +17,14 @@ static void Ctrl_IR_Led(turn blank);
 static void Ctrl_UVA_Led(turn blank);
 static void Ctrl_UVC_Led(turn blank);
 static void Ctrl_EXTFAN(turn blank);
+static void Ctrl_Heater(turn blank);
 static void process_led_blink(Ptimer_t* process,color_t color);
 
 static void change_system_mode(Sys_mode_t sysmode);
 static void change_led_mode(L_mode_t lmode);
 
 // For initializing struct type wigy
-void Initialize_wigy(WIGY_t *_instance){
+void reset_wigy(WIGY_t *_instance){
 	_instance->L.push_cnt 		= 0;
 	_instance->System.push_cnt  = 0;
 	_instance->fan				= 0;
@@ -86,7 +87,7 @@ void Ctrl_led(color_t color, turn on_off){
 void process(WIGY_t *wigy){
 	is_pushed_L_sw(wigy);
 	is_pushed_System_sw(wigy);
-	read_state(wigy);
+	read_state(wigy);	//For Debug
 }
 
 
@@ -108,6 +109,7 @@ static void change_system_mode(Sys_mode_t sysmode){
 		Ctrl_UVA_Led(on);
 		Ctrl_UVC_Led(on);
 		Ctrl_EXTFAN(on);
+		Ctrl_Heater(on);
 		break;
 	case Sys_All_off:
 		Ctrl_led(none,on);
@@ -115,6 +117,7 @@ static void change_system_mode(Sys_mode_t sysmode){
 		Ctrl_UVA_Led(off);
 		Ctrl_UVC_Led(off);
 		Ctrl_EXTFAN(off);
+		Ctrl_Heater(off);
 	default:
 		break;
 	}
@@ -154,7 +157,7 @@ static void change_led_mode(L_mode_t lmode){
 		Ctrl_UVA_Led(off);
 		Ctrl_UVC_Led(off);
 		Ctrl_IR_Led(off);
-		process_led_blink(&led_blink, pink);
+		//process_led_blink(&led_blink, pink);
 		break;
 	default:
 		break;
@@ -178,9 +181,14 @@ static void Ctrl_UVC_Led(turn blank){
 }
 
 static void Ctrl_EXTFAN(turn blank){
-	HAL_GPIO_WritePin(GPIOA,EXTFAN_G_Pin,blank);
+	HAL_GPIO_WritePin(GPIOA, EXTFAN_G_Pin, blank);
 }
 
+static void Ctrl_Heater(turn blank){
+	HAL_GPIO_WritePin(GPIOC, Heater_G_Pin, blank);
+}
+
+/*
 static void process_led_blink(Ptimer_t* process,color_t color){
 	if(process->do_flag == true){
 		Ctrl_led(color,process->current_cnt%2);	//set state with current cnt, cause blink has two state (off and on)
@@ -188,7 +196,7 @@ static void process_led_blink(Ptimer_t* process,color_t color){
 	}
 }
 
-
+*/
 
 
 

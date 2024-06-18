@@ -130,7 +130,7 @@ void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
 	if(led_blink.tick_flag == true) led_blink.tick++;
-	if(led_blink.tick_flag!= false && led_blink.tick != 0) led_blink.tick = 0;
+	//if(led_blink.tick_flag!= false && led_blink.tick != 0) led_blink.tick = 0;
 	valid_sw_tick++;
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
