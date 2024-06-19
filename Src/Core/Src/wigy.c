@@ -24,9 +24,9 @@ static void change_system_mode(Sys_mode_t sysmode);
 static void change_led_mode(L_mode_t lmode);
 
 // For initializing struct type wigy
-void reset_wigy(WIGY_t *_instance){
-	_instance->L.push_cnt 		= 0;
-	_instance->System.push_cnt  = 0;
+void reset_wigy(WIGY_t *_instance, SW_t* SW1,SW_t* SW2 ){
+	_instance->L 				= SW1;
+	_instance->System 			= SW2;
 	_instance->fan				= 0;
 	_instance->irled			= 0;
 	_instance->rgb_color		= 0;

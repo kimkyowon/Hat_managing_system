@@ -9,7 +9,7 @@
 #define INC_WIGY_H_
 
 #include "main.h"
-
+#include "switch.h"
 
 typedef enum {
 	none,pink,sky,blue,green,red
@@ -27,10 +27,6 @@ typedef enum System{
 	Sys_default,Sys_mode1,Sys_mode2,Sys_All_off
 }Sys_mode_t;
 
-typedef struct Switch{
-	int push_cnt;
-}SW_t;
-
 typedef struct modes{
 	Sys_mode_t sysmode;
 	L_mode_t lmode;
@@ -44,8 +40,8 @@ typedef struct MZR_WIGY{
 	turn uvcled;
 	turn fan;
 
-	SW_t L;			// SW1
-	SW_t System;	// SW2
+	SW_t* L;			// SW1
+	SW_t* System;	// SW2
 
 	mode_t mode;
 
