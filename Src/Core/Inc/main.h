@@ -80,12 +80,12 @@ void Error_Handler(void);
 #define SW1_EXTI_IRQn EXTI2_3_IRQn
 #define EXTFAN_G_Pin GPIO_PIN_3
 #define EXTFAN_G_GPIO_Port GPIOA
-#define RGB_Green_G_Pin GPIO_PIN_4
-#define RGB_Green_G_GPIO_Port GPIOA
-#define RGB_Red_G_Pin GPIO_PIN_0
-#define RGB_Red_G_GPIO_Port GPIOB
-#define RGB_Blue_G_Pin GPIO_PIN_11
+#define RGB_Blue_G_Pin GPIO_PIN_4
 #define RGB_Blue_G_GPIO_Port GPIOA
+#define RGB_Green_G_Pin GPIO_PIN_0
+#define RGB_Green_G_GPIO_Port GPIOB
+#define RGB_Red_G_Pin GPIO_PIN_11
+#define RGB_Red_G_GPIO_Port GPIOA
 #define LED12_G_Pin GPIO_PIN_3
 #define LED12_G_GPIO_Port GPIOB
 
