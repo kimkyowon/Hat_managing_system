@@ -44,16 +44,23 @@
 
 /* USER CODE BEGIN PV */
 WIGY_t my_wigy;
-Ptimer_t led_blink;
+//Ptimer_t led_blink;
+
+SW_t SW1, SW2;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-/* USER CODE BEGIN PFP */
-void initialize_pwp(Ptimer_t* _instance, uint32_t period, int repeat_cnt);
-void process_with_period(Ptimer_t* _instance);
 
+/* USER CODE BEGIN PFP */
+// void initialize_pwp(Ptimer_t* _instance, uint32_t period, int repeat_cnt);
+// void process_with_period(Ptimer_t* _instance);
+bool SW_readPinSW2(void);
+bool SW_readPinSW1(void);
+void SW_OnPressedSW2Cbk(SW_t *);
+void SW_OnPressedSW1Cbk(SW_t *);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -93,6 +100,9 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //initialize_pwp(&led_blink, 500, 5);
 
+  SW_init(&SW1, true, SW_OnPressedSW1Cbk, SW_readPinSW1);
+  SW_init(&SW2, true, SW_OnPressedSW2Cbk, SW_readPinSW2);
+  HAL_GPIO_WritePin(USBLED_GPIO_Port, USBLED_Pin, 1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -218,30 +228,42 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void initialize_pwp(Ptimer_t* _instance, uint32_t period, int repeat_cnt){
-	_instance->do_flag 		= false;
-	_instance->period  		= period;
-	_instance->repeat_cnt	= repeat_cnt;
+// void initialize_pwp(Ptimer_t* _instance, uint32_t period, int repeat_cnt){
+// 	_instance->do_flag 		= false;
+// 	_instance->period  		= period;
+// 	_instance->repeat_cnt	= repeat_cnt;
+// }
+
+// void process_with_period(Ptimer_t* _instance){
+// 	if(_instance->current_cnt == _instance->repeat_cnt) _instance->do_flag = false;
+
+// 	if(_instance->tick >= _instance->period && (_instance->do_flag == false)){
+// 		_instance->do_flag = true;
+// 		_instance->tick = 0;
+// 		_instance->current_cnt++;
+// 	}
+// }
+
+void SW_OnPressedSW1Cbk(SW_t *_Instance)
+{
+  WIGY_NotifyLEDSwPressed(&my_wigy);
 }
 
-void process_with_period(Ptimer_t* _instance){
-	if(_instance->current_cnt == _instance->repeat_cnt) _instance->do_flag = false;
-
-	if(_instance->tick >= _instance->period && (_instance->do_flag == false)){
-		_instance->do_flag = true;
-		_instance->tick = 0;
-		_instance->current_cnt++;
-	}
+void SW_OnPressedSW2Cbk(SW_t *_Instance)
+{
+  WIGY_NotifySystemSwPressed(&my_wigy);
 }
 
-
-void OnPressedSW1Cbk(SW_t* _Instance){
-
+bool SW_readPinSW1(void)
+{
+  return HAL_GPIO_ReadPin(SW1_GPIO_Port, SW1_Pin);
 }
 
-void OnPressedSW1Cbk(SW_t* _Instance){
-
+bool SW_readPinSW2(void)
+{
+  return HAL_GPIO_ReadPin(SW2_GPIO_Port, SW2_Pin);
 }
+
 
 /* USER CODE END 4 */
 

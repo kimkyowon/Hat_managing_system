@@ -43,7 +43,9 @@
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 extern WIGY_t my_wigy;
-extern Ptimer_t led_blink;
+//extern Ptimer_t led_blink;
+extern SW_t SW1;
+extern SW_t SW2;
 
 //uint32_t valid_sw_tick;
 /* USER CODE END PV */
@@ -129,9 +131,11 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-	if(led_blink.tick_flag == true) led_blink.tick++;
+	//if(led_blink.tick_flag == true) led_blink.tick++;
 	//if(led_blink.tick_flag!= false && led_blink.tick != 0) led_blink.tick = 0;
 	// valid_sw_tick++;
+  SW_msTask(&SW1);
+  SW_msTask(&SW2);
   
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
@@ -190,11 +194,11 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 {
   switch (GPIO_Pin)
   {
-  case SW2_Pin:
-    my_wigy.System.interruptFlag = true;
-    break;
   case SW1_Pin:
-    my_wigy.L.interruptFlag = true;
+    SW_notifySwitchPressed(&SW1);
+    break;
+  case SW2_Pin:
+    SW_notifySwitchPressed(&SW2);
     break;
   }
 }

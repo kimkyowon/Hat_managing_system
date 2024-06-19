@@ -1,22 +1,29 @@
 #include "switch.h"
 
-void SW_init(SW_t *instance, void (*Cbk)(SW_t *), bool (*readPin)(SW_t*))
+const static uint32_t chatterDelay = 50;
+
+static void SW_defaultPressedCbk(SW_t *instance){
+    //Do not use
+}
+
+static bool SW_defaultReadPin(void){
+    return 0;
+    //Do not use
+}
+
+
+void SW_init(SW_t *instance, bool isActiveLow, void (*Cbk)(SW_t *), bool (*readPin)(void))
 {
     if (!instance)
         return;
 
+    instance->isActiveLow = isActiveLow;
+
     instance->interruptFlag = 0;
     instance->pressedTimer = 0;
 
-    if (Cbk)
-        instance->OnPressedCbk = Cbk;
-    else
-        instance->OnPressedCbk = SW_defaultPressedCbk;
-
-    if (readPin)
-        instance->OnPressedCbk = Cbk;
-    else
-        instance->OnPressedCbk = SW_defaultReadPin;
+    instance->OnPressedCbk = (Cbk) ? Cbk : SW_defaultPressedCbk;
+    instance->readPin = (readPin) ? readPin : SW_defaultReadPin;
 }
 
 void SW_msTask(SW_t *instance)
@@ -24,11 +31,14 @@ void SW_msTask(SW_t *instance)
     if (!instance)
         return;
 
+    const bool PRESSED = !(instance->isActiveLow);
+
     if (instance->interruptFlag)
     {
-        if (instance->readPin() == 1) // Pressed : 1
+        if (instance->readPin() == PRESSED) // Pressed : 1
         {
-            if(instance->pressedTimer > chatterDelay){
+            if (instance->pressedTimer > chatterDelay)
+            {
                 instance->pressedTimer = 0;
                 instance->interruptFlag = false;
                 instance->OnPressedCbk(instance);
@@ -48,7 +58,7 @@ void SW_msTask(SW_t *instance)
     }
 }
 
-void SW_notifyInterrupt(SW_t *instance)
+void SW_notifySwitchPressed(SW_t *instance)
 {
     if (!instance)
         return;
@@ -56,11 +66,4 @@ void SW_notifyInterrupt(SW_t *instance)
     instance->interruptFlag = true;
 }
 
-static void SW_defaultPressedCbk(SW_t *instance){
-    //Do not use
-}
 
-static bool SW_defaultReadPin(void){
-    return 0;
-    //Do not use
-}
