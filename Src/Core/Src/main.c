@@ -233,6 +233,16 @@ void process_with_period(Ptimer_t* _instance){
 		_instance->current_cnt++;
 	}
 }
+
+
+void OnPressedSW1Cbk(SW_t* _Instance){
+
+}
+
+void OnPressedSW1Cbk(SW_t* _Instance){
+
+}
+
 /* USER CODE END 4 */
 
 /**

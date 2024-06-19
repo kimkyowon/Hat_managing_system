@@ -45,7 +45,7 @@
 extern WIGY_t my_wigy;
 extern Ptimer_t led_blink;
 
-uint32_t valid_sw_tick;
+//uint32_t valid_sw_tick;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -131,7 +131,8 @@ void SysTick_Handler(void)
   /* USER CODE BEGIN SysTick_IRQn 0 */
 	if(led_blink.tick_flag == true) led_blink.tick++;
 	//if(led_blink.tick_flag!= false && led_blink.tick != 0) led_blink.tick = 0;
-	valid_sw_tick++;
+	// valid_sw_tick++;
+  
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
@@ -156,12 +157,12 @@ void EXTI0_1_IRQHandler(void)
   /* USER CODE END EXTI0_1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(SW2_Pin);
   /* USER CODE BEGIN EXTI0_1_IRQn 1 */
-  if(valid_sw_tick >= 50){
-	  valid_sw_tick = 0;
-	  if(my_wigy.System.push_cnt>=3) my_wigy.System.push_cnt = 0;
-	  my_wigy.System.push_cnt++;
-	  if(my_wigy.L.push_cnt != 0) my_wigy.L.push_cnt = 0;
-  }
+  //  if(valid_sw_tick >= 50){
+	  //  valid_sw_tick = 0;
+	  //  if(my_wigy.System.push_cnt>=3) my_wigy.System.push_cnt = 0;
+	  //  my_wigy.System.push_cnt++;
+	  //  if(my_wigy.L.push_cnt != 0) my_wigy.L.push_cnt = 0;
+  //  }
   /* USER CODE END EXTI0_1_IRQn 1 */
 }
 
@@ -175,14 +176,27 @@ void EXTI2_3_IRQHandler(void)
   /* USER CODE END EXTI2_3_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(SW1_Pin);
   /* USER CODE BEGIN EXTI2_3_IRQn 1 */
-  if(valid_sw_tick >= 50){
-	  valid_sw_tick = 0;
-	  if(my_wigy.L.push_cnt>=6) my_wigy.L.push_cnt = 0;
-	  if(my_wigy.System.push_cnt == 3 || my_wigy.System.push_cnt == 0) my_wigy.L.push_cnt++;
-  }
+  // if(valid_sw_tick >= 50){
+	//   valid_sw_tick = 0;
+	//   if(my_wigy.L.push_cnt>=6) my_wigy.L.push_cnt = 0;
+	//   if(my_wigy.System.push_cnt == 3 || my_wigy.System.push_cnt == 0) my_wigy.L.push_cnt++;
+  // }
   /* USER CODE END EXTI2_3_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
+
+void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
+{
+  switch (GPIO_Pin)
+  {
+  case SW2_Pin:
+    my_wigy.System.interruptFlag = true;
+    break;
+  case SW1_Pin:
+    my_wigy.L.interruptFlag = true;
+    break;
+  }
+}
 
 /* USER CODE END 1 */
