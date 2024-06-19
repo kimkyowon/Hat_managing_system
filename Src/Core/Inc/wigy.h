@@ -95,7 +95,7 @@ typedef struct MZR_WIGY
 
 } WIGY_t;
 
-void Initialize_wigy(WIGY_t *instance);
+void Init_wigy(WIGY_t *instance);
 // void is_pushed_L_sw(WIGY_t *wigy);
 // void is_pushed_System_sw(WIGY_t *wigy);
 void WIGY_NotifyLEDSwPressed(WIGY_t *);	   // When Switch Pressed

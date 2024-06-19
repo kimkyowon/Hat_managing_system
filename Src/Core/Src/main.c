@@ -53,7 +53,6 @@ SW_t SW1, SW2;
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-
 /* USER CODE BEGIN PFP */
 // void initialize_pwp(Ptimer_t* _instance, uint32_t period, int repeat_cnt);
 // void process_with_period(Ptimer_t* _instance);
@@ -102,7 +101,11 @@ int main(void)
 
   SW_init(&SW1, true, SW_OnPressedSW1Cbk, SW_readPinSW1);
   SW_init(&SW2, true, SW_OnPressedSW2Cbk, SW_readPinSW2);
+
   HAL_GPIO_WritePin(USBLED_GPIO_Port, USBLED_Pin, 1);
+
+  Init_wigy(&my_wigy);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -175,22 +178,16 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, LEDD1012_G_Pin|LED12_G_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, LEDD1012_G_Pin|RGB_Green_G_Pin|LED12_G_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOC, Heater_G_Pin|UVLED_G_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, USBLED_Pin|EXTFAN_G_Pin|RGB_Green_G_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, USBLED_Pin|EXTFAN_G_Pin|RGB_Blue_G_Pin|RGB_Red_G_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(RGB_Red_G_GPIO_Port, RGB_Red_G_Pin, GPIO_PIN_SET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(RGB_Blue_G_GPIO_Port, RGB_Blue_G_Pin, GPIO_PIN_SET);
-
-  /*Configure GPIO pins : LEDD1012_G_Pin RGB_Red_G_Pin LED12_G_Pin */
-  GPIO_InitStruct.Pin = LEDD1012_G_Pin|RGB_Red_G_Pin|LED12_G_Pin;
+  /*Configure GPIO pins : LEDD1012_G_Pin RGB_Green_G_Pin LED12_G_Pin */
+  GPIO_InitStruct.Pin = LEDD1012_G_Pin|RGB_Green_G_Pin|LED12_G_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -203,8 +200,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : USBLED_Pin EXTFAN_G_Pin RGB_Green_G_Pin RGB_Blue_G_Pin */
-  GPIO_InitStruct.Pin = USBLED_Pin|EXTFAN_G_Pin|RGB_Green_G_Pin|RGB_Blue_G_Pin;
+  /*Configure GPIO pins : USBLED_Pin EXTFAN_G_Pin RGB_Blue_G_Pin RGB_Red_G_Pin */
+  GPIO_InitStruct.Pin = USBLED_Pin|EXTFAN_G_Pin|RGB_Blue_G_Pin|RGB_Red_G_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;

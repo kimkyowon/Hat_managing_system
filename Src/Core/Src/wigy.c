@@ -13,18 +13,24 @@
 
 // static functions prototypes
 //static void led_off_all();
+static void Ctrl_led(RGB_t _rgb);
 static void Ctrl_IR_Led(turn blank);
 static void Ctrl_UVA_Led(turn blank);
 static void Ctrl_UVC_Led(turn blank);
 static void Ctrl_EXTFAN(turn blank);
 static void Ctrl_Heater(turn blank);
+
+static void 	WIGY_ResetPressedFlags	(WIGY_t *);
+static void 	WIGY_UpdateOutputs		(WIGY_t *);
+static State_t 	WIGY_Eval_NextState		(WIGY_t *);
+static void 	WIGY_UpdateOutputs		(WIGY_t *);
 //static void process_led_blink(Ptimer_t* process,color_t color);
 
 //static void change_system_mode(Sys_mode_t sysmode);
 //static void change_led_mode(L_mode_t lmode);
 
 // For initializing struct type wigy
-void reset_wigy(WIGY_t *_instance)
+void Init_wigy(WIGY_t *_instance)
 {
 	// _instance->L 				= SW1;
 	// _instance->System 			= SW2;
@@ -37,8 +43,36 @@ void reset_wigy(WIGY_t *_instance)
 	// _instance->mode.sysmode		= 0;
 	_instance->LEDSwPressedFlag 	= false;
 	_instance->SystemSwPressedFlag 	= false;
-	_instance->state 				= S_Sys_mode0; //Initial State
+	_instance->state 				= S_L_mode0; //Initial State
+	WIGY_UpdateOutputs(_instance);
 }
+
+void process(WIGY_t *wigy){ //Process Moore Statemachine
+	// is_pushed_L_sw(wigy);
+	// is_pushed_System_sw(wigy);
+	const bool Sw_LED = wigy->LEDSwPressedFlag;
+	const bool Sw_Mode = wigy->SystemSwPressedFlag;
+
+	if (Sw_LED || Sw_Mode) //Implies State Transition
+	{
+		wigy->state = WIGY_Eval_NextState(wigy);
+		WIGY_UpdateOutputs(wigy);
+
+		WIGY_ResetPressedFlags(wigy);
+	}
+	//read_state(wigy);	//For Debug
+}
+
+void WIGY_NotifyLEDSwPressed(WIGY_t *wigy)
+{
+	wigy->LEDSwPressedFlag = true;
+}
+void WIGY_NotifySystemSwPressed(WIGY_t *wigy)
+{
+	wigy->SystemSwPressedFlag = true;
+}
+
+
 
 // void is_pushed_L_sw(WIGY_t *wigy){
 // 	if(wigy->L.push_cnt != wigy->mode.lmode){
@@ -61,7 +95,7 @@ void reset_wigy(WIGY_t *_instance)
 //  	wigy->fan	 = HAL_GPIO_ReadPin(GPIOA,EXTFAN_G_Pin);
 //  }
 
-void Ctrl_led(RGB_t _rgb){
+static void Ctrl_led(RGB_t _rgb){
 	//led_off_all();
 
 	HAL_GPIO_WritePin(RGB_Red_G_GPIO_Port	, RGB_Red_G_Pin		, (bool)_rgb.R);
@@ -242,37 +276,6 @@ static void WIGY_UpdateOutputs(WIGY_t *wigy)
 		break;
 	}
 }
-
-void process(WIGY_t *wigy){ //Process Moore Statemachine
-	// is_pushed_L_sw(wigy);
-	// is_pushed_System_sw(wigy);
-	const bool Sw_LED = wigy->LEDSwPressedFlag;
-	const bool Sw_Mode = wigy->SystemSwPressedFlag;
-
-	if (Sw_LED || Sw_Mode) //Implies State Transition
-	{
-		if (Sw_LED && Sw_Mode) //HoxyMola
-		{
-			WIGY_ResetPressedFlags(wigy);
-			return;
-		}
-
-		wigy->state = WIGY_Eval_NextState(wigy);
-		WIGY_UpdateOutputs(wigy);
-		WIGY_ResetPressedFlags(wigy);
-	}
-	//read_state(wigy);	//For Debug
-}
-
-void WIGY_NotifyLEDSwPressed(WIGY_t *wigy)
-{
-	wigy->LEDSwPressedFlag = true;
-}
-void WIGY_NotifySystemSwPressed(WIGY_t *wigy)
-{
-	wigy->SystemSwPressedFlag = true;
-}
-
 
 // static void change_system_mode(Sys_mode_t sysmode){
 // 	switch(sysmode){	//Sys_default,Sys_mode1,Sys_mode2,Sys_All_off
