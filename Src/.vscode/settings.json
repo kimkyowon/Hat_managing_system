@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "stm32g0xx_it.h": "c",
-        "switch.h": "c"
+        "switch.h": "c",
+        "main.h": "c",
+        "wigy.h": "c"
     }
 }

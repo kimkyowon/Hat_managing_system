@@ -36,14 +36,14 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-typedef struct process_with_period{
-	bool do_flag;
-	bool tick_flag;
-	uint32_t tick;
-	uint32_t period;
-	int repeat_cnt;
-	int current_cnt;
-}Ptimer_t;
+// typedef struct process_with_period{
+// 	bool do_flag;
+// 	bool tick_flag;
+// 	uint32_t tick;
+// 	uint32_t period;
+// 	int repeat_cnt;
+// 	int current_cnt;
+// }Ptimer_t;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
